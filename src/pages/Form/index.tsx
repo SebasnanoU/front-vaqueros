@@ -4,7 +4,8 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 export function Form() {
   const [token, setToken] = useState<string | null>(null);
   const [names, setNames] = useState<string[]>([]);
-  const clientId = 'YOUR_GOOGLE_CLIENT_ID';
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
     const stored = localStorage.getItem('token');
@@ -15,7 +16,7 @@ export function Form() {
 
   async function verifyToken(t: string) {
     try {
-      const res = await fetch('/api/verify', {
+      const res = await fetch(`${apiBase}/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: t }),
